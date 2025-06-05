@@ -2,40 +2,118 @@ import 'package:flutter/material.dart';
 
 void main() => runApp(const MyApp());
 
-class MyApp extends StatelessWidget
-{
-  const MyApp({Key? key}) : super(key: key);
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
   @override
-  Widget build(BuildContext context)
-  {
+  Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.blue,
-          title: const Text(
-            "I am Tom",
-            style: TextStyle(color: Colors.white),
-          ),
-        ),
-        body: Container(
-          height: 200,
-          width: double.infinity,
-          alignment: Alignment.bottomCenter,
-          margin: const EdgeInsets.all(20),
-          padding: const EdgeInsets.all(30),
-          decoration: BoxDecoration(
-            color: Colors.blue,
-            borderRadius: BorderRadius.circular(15),
-            border: Border.all(color: Colors.black, width: 3),
-          ),
-          transform: Matrix4.rotationY(0.1),
-          child: const Text(
-            "Hello! I am inside a container!",
-            style: TextStyle(fontSize: 20, color: Colors.white),
-          ),
+      title: 'Scaffold Example',
+      home: MyHomePage(),
+    );
+  }
+}
+
+class MyHomePage extends StatefulWidget {
+  const MyHomePage({super.key});
+  @override
+  _MyHomePageState createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  int _selectedIndex = 0;
+
+  // Method to handle bottom navigation bar item taps
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.greenAccent,
+        title: const Text(
+          "I am Tom",
+          style: TextStyle(color: Colors.white),
         ),
       ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              'Selected Index: $_selectedIndex',
+              style: const TextStyle(
+                color: Colors.black,
+                fontSize: 40,
+              ),
+            ),
+          ],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.greenAccent,
+        elevation: 10,
+        child: const Icon(
+          Icons.add,
+          color: Colors.white,
+        ),
+        onPressed: () {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text("I am the Greatest!"),
+            ),
+          );
+        },
+      ),
+      drawer: Drawer(
+        child: ListView(
+          children: const [
+            DrawerHeader(
+              decoration: BoxDecoration(
+                color: Colors.green,
+              ),
+              child: Text(
+                "I am",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 24,
+                ),
+              ),
+            ),
+              ListTile(
+                title: Text('Alpha'), leading: Icon(Icons.local_fire_department_outlined),
+              ),
+              ListTile(
+                title: Text('Beta'),leading: Icon(Icons.water_drop_outlined),
+              ),
+              ListTile(
+                title: Text('Gamma'),leading: Icon(Icons.air),
+              ),
+          ],
+        ),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+          items: const[
+            BottomNavigationBarItem(
+                label: "A",
+                icon: Icon(Icons.home)
+            ),
+            BottomNavigationBarItem(
+                label: "B",
+                icon: Icon(Icons.search)
+            ),
+            BottomNavigationBarItem(
+                label: "C",
+                icon: Icon(Icons.account_circle)
+            ),
+          ],
+          currentIndex: _selectedIndex,
+          selectedItemColor: Colors.greenAccent,
+          onTap: _onItemTapped,
+        ),
     );
   }
 }
